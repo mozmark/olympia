@@ -15,7 +15,8 @@ from amo.utils import sorted_groupby
 from amo.tasks import flush_front_end_cache_urls
 from versions.compare import version_int
 from .models import (BlocklistApp, BlocklistCA, BlocklistDetail, BlocklistGfx,
-                     BlocklistItem, BlocklistIssuerCert, BlocklistPlugin)
+                     BlocklistItem, BlocklistIssuerCert, BlocklistSubjectCert,
+                     BlocklistPlugin)
 
 
 App = collections.namedtuple('App', 'guid min max')
@@ -42,6 +43,7 @@ def _blocklist(request, apiver, app, appver):
     plugins = get_plugins(apiver, app, appver)
     gfxs = BlocklistGfx.objects.filter(Q(guid__isnull=True) | Q(guid=app))
     issuerCertBlocks = BlocklistIssuerCert.objects.all()
+    subjectCertBlocks = BlocklistSubjectCert.objects.all()
     cas = None
 
     try:
@@ -58,7 +60,8 @@ def _blocklist(request, apiver, app, appver):
     last_update = int(time.mktime(last_update.timetuple()) * 1000)
     data = dict(items=items, plugins=plugins, gfxs=gfxs, apiver=apiver,
                 appguid=app, appver=appver, last_update=last_update, cas=cas,
-                issuerCertBlocks=issuerCertBlocks)
+                issuerCertBlocks=issuerCertBlocks,
+                subjectCertBlocks=subjectCertBlocks)
     return render(request, 'blocklist/blocklist.xml', data,
                   content_type='text/xml')
 

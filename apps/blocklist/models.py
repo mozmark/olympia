@@ -168,6 +168,22 @@ class BlocklistIssuerCert(BlocklistBase, amo.models.ModelBase):
         return ['/blocklist*']  # no lang/app
 
 
+class BlocklistSubjectCert(BlocklistBase, amo.models.ModelBase):
+    _type = 's'
+    subject = models.TextField()  # Again, we can't know the size.
+    pubkeyhash = models.CharField(max_length=65)
+    details = models.OneToOneField(BlocklistDetail)
+
+    class Meta:
+        db_table = 'blsubjectcert'
+
+    def __unicode__(self):
+        return unicode(self.details.name)
+
+    def flush_urls(self):
+        return ['/blocklist*']  # no lang/app
+
+
 class BlocklistPref(amo.models.ModelBase):
     """Preferences which should be reset when a blocked item is detected."""
 

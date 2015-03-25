@@ -25,7 +25,7 @@ class ItemAdmin(admin.ModelAdmin):
 
 
 ms = (models.BlocklistItem, models.BlocklistPlugin, models.BlocklistGfx,
-      models.BlocklistIssuerCert)
+      models.BlocklistIssuerCert, models.BlocklistSubjectCert)
 inlines = map(stacked_inline, ms)
 
 
@@ -39,4 +39,5 @@ admin.site.register(models.BlocklistItem, ItemAdmin)
 admin.site.register(models.BlocklistPlugin, PluginAdmin)
 admin.site.register(models.BlocklistGfx)
 admin.site.register(models.BlocklistIssuerCert)
+admin.site.register(models.BlocklistSubjectCert)
 admin.site.register(models.BlocklistDetail, DetailAdmin)
