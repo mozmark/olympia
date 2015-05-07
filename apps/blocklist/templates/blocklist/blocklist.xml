@@ -105,11 +105,15 @@
   </gfxItems>
 {% endif %}
 
-{% if issuerCertBlocks %}
+{% if issuerCertBlocks or subjectCertBlocks%}
   <certItems>
     {% for issuerCertBlock in issuerCertBlocks %}
     <certItem issuerName="{{ issuerCertBlock.issuer }}">
       <serialNumber>{{ issuerCertBlock.serial }}</serialNumber>
+    </certItem>
+    {% endfor %}
+    {% for subjectCertBlock in subjectCertBlocks %}
+    <certItem pubKeyHash="{{ subjectCertBlock.pubkeyhash }}" subject="{{ subjectCertBlock.subject }}">
     </certItem>
     {% endfor %}
   </certItems>
